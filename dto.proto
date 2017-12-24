@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package cellar;
+
+message ChunkDto {
+     int64 uncompressedByteSize = 1;
+     int64 compressedDiskSize = 2;
+     int64 records = 3;
+     string fileName = 4;
+     int64 startPos = 5 ;
+}
+
+
+message BufferDto {
+     int64 startPos = 1;
+     int64 maxBytes = 2;
+     int64 records = 3;
+     int64 pos = 4;
+     string fileName = 5;
+}
+
+
+message MetaDto {
+        int64 maxKeySize = 1;
+        int64 maxValSize = 2;
+}
