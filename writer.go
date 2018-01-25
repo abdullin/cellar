@@ -201,6 +201,18 @@ func (w *Writer) Close() error {
 	return w.db.Close()
 }
 
+// ReadDB allows to execute read transaction against
+// the meta database
+func (w *Writer) ReadDB(op mdb.TxOp) error {
+	return w.db.Read(op)
+}
+
+// Write DB allows to execute write transaction against
+// the meta database
+func (w *Writer) WriteDB(op mdb.TxOp) error {
+	return w.db.Update(op)
+}
+
 func (w *Writer) Checkpoint() (int64, error) {
 	w.b.flush()
 
