@@ -3,18 +3,16 @@ package cellar
 import (
 	"os"
 	"testing"
-
-	"bitbucket.org/abdullin/bitgn/tester"
 )
 
 func getFolder() string {
-	return tester.NewFolder("cellar")
+	return NewTempFolder("cellar")
 }
 
 func TestMain(m *testing.M) {
 	// setup
 	retCode := m.Run()
-	tester.RemoveFolders()
+	RemoveTempFolders()
 	os.Exit(retCode)
 }
 

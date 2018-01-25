@@ -209,8 +209,31 @@ func (w *Writer) ReadDB(op mdb.TxOp) error {
 
 // Write DB allows to execute write transaction against
 // the meta database
-func (w *Writer) WriteDB(op mdb.TxOp) error {
+func (w *Writer) UpdateDB(op mdb.TxOp) error {
 	return w.db.Update(op)
+}
+
+func (w *Writer) PutUserCheckpoint(name string, pos int64) error {
+	return w.db.Update(func(tx *mdb.Tx) error {
+		return lmdbPutUserCheckpoint(tx, name, pos)
+	})
+}
+
+func (w *Writer) GetUserCheckpoint(name string) (int64, error) {
+
+	var pos int64
+	err := w.db.Read(func(tx *mdb.Tx) error {
+		p, e := lmdbGetUserCheckpoint(tx, name)
+		if e != nil {
+			return e
+		}
+		pos = p
+		return nil
+	})
+	if err != nil {
+		return 0, err
+	}
+	return pos, nil
 }
 
 func (w *Writer) Checkpoint() (int64, error) {

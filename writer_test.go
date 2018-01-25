@@ -117,6 +117,38 @@ func assertCheckpoint(t *testing.T, w *Writer) {
 	}
 }
 
+func TestUserCheckpoints(t *testing.T) {
+
+	var (
+		w   *Writer
+		err error
+		pos int64
+	)
+
+	folder := getFolder()
+	key := genRandBytes(16)
+	w, err = NewWriter(folder, 1000, key)
+
+	defer closeWriter(t, w)
+
+	assert(t, err, "NewWriter")
+
+	pos, err = w.GetUserCheckpoint("custom")
+	assert(t, err, "GetCheckpoint")
+	if pos != 0 {
+		t.Fatal("Checkpoint should be 0")
+	}
+
+	assert(t, w.PutUserCheckpoint("custom", 42), "PutCheckpoint")
+
+	pos, err = w.GetUserCheckpoint("custom")
+	assert(t, err, "GetCheckpoint")
+	if pos != 42 {
+		t.Fatal("Checkpoint should be 42")
+	}
+
+}
+
 func TestSingleChunkDB(t *testing.T) {
 
 	log.Print("Starting single chunk")

@@ -14,12 +14,37 @@ import (
 )
 
 const (
-	BufferTable    byte = 3
-	ChunkTable     byte = 1
-	MetaTable      byte = 2
-	CellarTable    byte = 4
-	UserIndexTable byte = 5
+	ChunkTable          byte = 1
+	MetaTable           byte = 2
+	BufferTable         byte = 3
+	CellarTable         byte = 4
+	UserIndexTable      byte = 5
+	UserCheckpointTable byte = 6
 )
+
+func lmdbPutUserCheckpoint(tx *mdb.Tx, name string, pos int64) error {
+	key := mdb.CreateKey(UserCheckpointTable, name)
+
+	value, err := tx.PutReserve(key, 8)
+	if err != nil {
+		return errors.Wrap(err, "PutReserve")
+	}
+	binary.LittleEndian.PutUint64(value, uint64(pos))
+	return nil
+}
+
+func lmdbGetUserCheckpoint(tx *mdb.Tx, name string) (int64, error) {
+
+	key := mdb.CreateKey(UserCheckpointTable, name)
+	value, err := tx.Get(key)
+	if err != nil {
+		return 0, errors.Wrap(err, "Get")
+	}
+	if len(value) == 0 {
+		return 0, nil
+	}
+	return int64(binary.LittleEndian.Uint64(value)), nil
+}
 
 func lmdbAddChunk(tx *mdb.Tx, chunkStartPos int64, dto *ChunkDto) error {
 	key := mdb.CreateKey(ChunkTable, chunkStartPos)
