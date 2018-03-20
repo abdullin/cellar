@@ -16,6 +16,9 @@ func (reader *Reader) ScanAsync(buffer int) chan *Rec {
 	vals := make(chan *Rec, buffer)
 
 	go func() {
+		// make sure we terminate the channel on scan read
+		defer close(vals)
+
 		err := reader.Scan(func(ri *ReaderInfo, data []byte) error {
 			vals <- &Rec{data, ri.ChunkPos, ri.StartPos, ri.NextPos}
 			return nil
@@ -24,8 +27,6 @@ func (reader *Reader) ScanAsync(buffer int) chan *Rec {
 		if err != nil {
 			log.Panic(err)
 		}
-
-		close(vals)
 	}()
 
 	return vals
