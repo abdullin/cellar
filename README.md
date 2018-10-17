@@ -1,5 +1,7 @@
 # Cellar
 
+[![Build Status](https://travis-ci.com/abdullin/cellar.svg?branch=master)](https://travis-ci.com/carapace/cellar)
+
 Cellar is the append-only storage backend in Go designed for the analytical
 workloads. It replaces [geyser-net](https://github.com/abdullin/geyser-net).
 
