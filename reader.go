@@ -71,7 +71,7 @@ func (r *Reader) Scan(op ReadOp) error {
 	defer db.Close()
 
 	var b *BufferDto
-	var meta *MetaDto
+	// var meta *MetaDto
 	var chunks []*ChunkDto
 
 	loadBuffer := (r.Flags & RF_LoadBuffer) == RF_LoadBuffer
@@ -82,7 +82,7 @@ func (r *Reader) Scan(op ReadOp) error {
 		if b, err = lmdbGetBuffer(tx); err != nil {
 			return errors.Wrap(err, "lmdbGetBuffer")
 		}
-		if meta, err = lmdbGetCellarMeta(tx); err != nil {
+		if _, err = lmdbGetCellarMeta(tx); err != nil {
 			return errors.Wrap(err, "lmdbGetCellarMeta")
 		}
 		if chunks, err = lmdbListChunks(tx); err != nil {
