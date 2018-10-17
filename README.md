@@ -21,6 +21,15 @@ HappyPancake to run real-time aggregation and long-term data analysis
 on the largest social website in Sweden. You can read more about it in
 [Real-time Analytics with Go and LMDB](https://abdullin.com/bitgn/real-time-analytics/).
 
+# Contributors
+
+In the alphabetical order:
+
+- [Karel L. Kubat](https://github.com/KaiserKarel)
+- [Rinat Abdullin](https://github.com/abdullin)
+
+Don't hesitate to send a PR to include your profile.
+
 # Design
 
 Cellar stores data in a very simple manner:
