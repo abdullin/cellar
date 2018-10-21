@@ -5,7 +5,7 @@ require (
 	github.com/abdullin/mdb v0.0.0-20171224093530-b63d30c6dad8
 	github.com/bmatsuo/lmdb-go v1.8.0
 	github.com/golang/protobuf v1.2.0
-	github.com/pierrec/lz4 v1.0.1
+	github.com/pierrec/lz4 v0.0.0-20181005164709-635575b42742
 	github.com/pierrec/xxHash v0.1.1 // indirect
 	github.com/pkg/errors v0.8.0
 )

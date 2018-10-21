@@ -53,7 +53,7 @@ func lmdbAddChunk(tx *mdb.Tx, chunkStartPos int64, dto *ChunkDto) error {
 		return errors.Wrap(err, "PutProto")
 	}
 
-	log.Printf("Added chunk %s with %d records and %d bytes", dto.FileName, dto.Records, dto.UncompressedByteSize)
+	log.Printf("Added chunk %s with %d records and %d bytes (%d compressed)", dto.FileName, dto.Records, dto.UncompressedByteSize, dto.CompressedDiskSize)
 	return nil
 }
 

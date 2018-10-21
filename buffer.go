@@ -142,21 +142,18 @@ func (b *Buffer) compress(key []byte) (dto *ChunkDto, err error) {
 	defer encryptor.Close()
 
 	// compress before encrypting
-	zw := lz4.NewWriter(encryptor)
-	zw.Header.HighCompression = true
 
-	defer func() {
-		if err := zw.Close(); err != nil {
-			panic("Failed to close zw")
-		}
-	}()
+	var zw *lz4.Writer
+	if zw, err = chainCompressor(encryptor); err != nil {
+		log.Panicf("Failed to chain compressor: %s", err)
+	}
 
 	// copy chunk to the chain
 	if _, err = io.CopyN(zw, b.stream, b.pos); err != nil {
 		return nil, errors.Wrap(err, "CopyN")
 	}
 
-	zw.Flush()
+	zw.Close()
 	chunkFile.Sync()
 	b.close()
 

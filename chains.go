@@ -11,10 +11,22 @@ import (
 	"github.com/pkg/errors"
 )
 
+var compressionLevel = 10
+
+// SetCompressionLevel allows you to set LZ4 compression level used for chunks
+func SetCompressionLevel(level int) {
+	compressionLevel = level
+}
+
 func chainCompressor(w io.Writer) (*lz4.Writer, error) {
 	zw := lz4.NewWriter(w)
-	zw.Header.HighCompression = true
+	zw.Header.CompressionLevel = compressionLevel
 	return zw, nil
+}
+
+func chainDecompressor(r io.Reader) (io.Reader, error) {
+	zr := lz4.NewReader(r)
+	return zr, nil
 }
 
 func chainDecryptor(key []byte, src io.Reader) (io.Reader, error) {
